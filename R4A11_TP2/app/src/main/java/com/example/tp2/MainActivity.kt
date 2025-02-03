@@ -2,45 +2,27 @@ package com.example.tp2
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html
 import android.widget.Button
-import android.widget.TextView
-import com.google.android.material.textfield.TextInputEditText
-import androidx.activity.enableEdgeToEdge
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        const val EXTRA_TEXT = "text_to_display"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         val firstButton: Button = findViewById(R.id.firstButton)
-        val textView: TextView = findViewById(R.id.textView)
-        val editText: TextInputEditText = findViewById(R.id.editText)
-        val nextButton: Button = findViewById(R.id.next)
-        val textView2: TextView = findViewById(R.id.textView2)
-
-        textView2.text = Html.fromHtml("<b>Bienvenue</b>")
+        val nameEditText: EditText = findViewById(R.id.editText)
+        val yearEditText: EditText = findViewById(R.id.yearEditText)
 
         firstButton.setOnClickListener {
-            textView.text = editText.text.toString()
-        }
+            val name = nameEditText.text.toString()
+            val yearOfBirth = yearEditText.text.toString().toIntOrNull() ?: -1
 
-        nextButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, MainActivity2::class.java)
-            intent.putExtra(EXTRA_TEXT, editText.text.toString())
+            val intent = Intent(this, MainActivity2::class.java).apply {
+                putExtra(MainActivity2.EXTRA_TEXT, name)
+                putExtra(MainActivity2.EXTRA_YEAR, yearOfBirth)
+            }
             startActivity(intent)
         }
     }

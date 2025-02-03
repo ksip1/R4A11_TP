@@ -20,12 +20,25 @@ class MainActivity2 : AppCompatActivity() {
         }
 
         val displayTextView: TextView = findViewById(R.id.displayTextView)
-        val textToDisplay = intent?.getStringExtra(MainActivity.EXTRA_TEXT)
-        displayTextView.text = "Hello ${textToDisplay ?: "No data received"} !"
+        val name = intent?.getStringExtra(EXTRA_TEXT)
+        val yearOfBirth = intent?.getIntExtra(EXTRA_YEAR, -1) ?: -1
+
+        if (yearOfBirth != -1) {
+            val ageCalculator = AgeCalculator()
+            val age = ageCalculator.calculateAge(yearOfBirth)
+            displayTextView.text = "Hello $name, vous avez $age ans !"
+        } else {
+            displayTextView.text = "Hello $name, l'âge est mal défini!"
+        }
 
         val backButton: Button = findViewById(R.id.backButton)
         backButton.setOnClickListener {
             finish()
         }
+    }
+
+    companion object {
+        const val EXTRA_TEXT = "com.example.tp2.EXTRA_TEXT"
+        const val EXTRA_YEAR = "com.example.tp2.EXTRA_YEAR"
     }
 }
